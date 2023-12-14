@@ -14,33 +14,36 @@ import com.d121211040.photography.data.repository.PhotographyRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 
+
 sealed interface MainUiState {
     data class Success(val photography: List<Photography>) : MainUiState
     object Error : MainUiState
     object Loading : MainUiState
 }
+class MainViewModel(private val photographyRepository: PhotographyRepository) : ViewModel() {
 
-class MainViewModel(private val photographyRepository: PhotographyRepository): ViewModel(){
-
-    // initial state
+    // Mutable state variable to hold the UI state
     var mainUiState: MainUiState by mutableStateOf(MainUiState.Loading)
         private set
 
+    // Function to fetch photography data
     fun getPhotography() = viewModelScope.launch {
         mainUiState = MainUiState.Loading
         try {
             val result = photographyRepository.getPhotography()
-            mainUiState = MainUiState.Success(result.photography.orEmpty())
+            mainUiState = MainUiState.Success(result.hits.orEmpty())
         } catch (e: IOException) {
+//            e.printStackTrace()
             mainUiState = MainUiState.Error
         }
     }
 
-    // block yg prtama dipanggil ktika ini dibuka
+    // Initialize the ViewModel by fetching photography data
     init {
         getPhotography()
     }
 
+    // Companion object for ViewModelProvider.Factory
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetPhotographyResponse(
-    @SerialName("photography")
-    val photography: List<Photography>?,
+    @SerialName("hits")
+    val hits: List<Photography>,
     @SerialName("total")
-    val total: Int?,
+    val total: Int,
     @SerialName("totalHits")
-    val totalHits: Int?
+    val totalHits: Int
 )
