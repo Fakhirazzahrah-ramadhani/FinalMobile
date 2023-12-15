@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +29,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -35,6 +39,7 @@ import com.d121211040.photography.R
 import com.d121211040.photography.data.models.Photography
 import com.d121211040.photography.ui.theme.AplikasiPhotographyTheme
 import kotlinx.serialization.json.JsonNull.content
+
 
 class DetailActivity : ComponentActivity() {
 
@@ -48,7 +53,7 @@ class DetailActivity : ComponentActivity() {
             AplikasiPhotographyTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onSecondary
                 ) {
                     DetailsScreen()
                 }
@@ -81,11 +86,25 @@ class DetailActivity : ComponentActivity() {
                 )
             //Text(text = "Taken by: ${photography.user.toString()}")
             //Detail
-            Text(text ="Detail:${selectedPhotography?.tags.toString()}" )
+            Text(text ="Detail:${selectedPhotography?.tags.toString()}",
+                style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold )
+
+            Spacer(modifier = Modifier.height(8.dp))
             //Likes
-            Text(text ="Likes:${selectedPhotography?.likes.toString()}" )
+            Row {
+                Image(painter = painterResource(id = R.drawable.icons8_heart_48), contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text =" ${selectedPhotography?.likes.toString()}" )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
             //content
-            Text(text ="Views:${selectedPhotography?.views.toString()}" )
+            Row{
+                Image(painter = painterResource(id = R.drawable.icons8_view_64), contentDescription = null )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text ="${selectedPhotography?.views.toString()}" )
+            }
+
 
         }
     }
